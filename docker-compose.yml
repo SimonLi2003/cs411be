@@ -1,0 +1,20 @@
+version: '3.8'
+
+# define the volume we want (in this case: MYSQL, with some properties like password)
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: cs411-backend
+      MYSQL_ROOT_PASSWORD: password
+      TZ: UTC
+    volumes:
+      - mysql-local:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+
+# make mysql-local defined above declaration be the permanent storage for the docker container
+volumes:
+  mysql-local:
