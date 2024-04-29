@@ -31,7 +31,8 @@ public class NutritionService {
         return nutritionRepository.getAllNutrition();
     }
 
-    public NutritionEntity getNutritionWithRecipeID(Long recipeID) {
+    public NutritionEntity getNutritionWithRecipeID(String stringRecipeID) {
+        Long recipeID = Long.parseLong(stringRecipeID);
         return nutritionRepository.getNutritionEntityWithRecipeID(recipeID);
     }
 

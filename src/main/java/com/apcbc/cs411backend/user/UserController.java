@@ -2,6 +2,7 @@ package com.apcbc.cs411backend.user;
 
 import com.apcbc.cs411backend.db.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +28,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public void isUserLoggedIn(@RequestParam String userEmail, String password) throws IllegalArgumentException, IllegalStateException {
-        userService.getUserByEmailAndPassword(userEmail, password);
+    public ResponseEntity<Long> userLogin(@RequestParam String userEmail, String password) throws IllegalArgumentException, IllegalStateException {
+        Long userID = userService.getUserByEmailAndPassword(userEmail, password);
+        return ResponseEntity.ok(userID);
     }
 
     // ==========================================================================================================
@@ -48,6 +50,14 @@ public class UserController {
     // ==========================================================================================================
     // |                                                 UPDATE                                                 |
     // ==========================================================================================================
+    @PutMapping("/updateAll")
+    public void updateAll(@RequestParam String userID,
+                          String newUserName,
+                          String newUserEmail,
+                          String newUserPassword) {
+        userService.updateAll(userID, newUserName, newUserEmail, newUserPassword);
+    }
+
     @PutMapping("/updateEmail")
     public void updateEmail(@RequestParam Long userID,
                             @RequestParam String newUserEmail
@@ -74,7 +84,7 @@ public class UserController {
     // |                                                DELETE                                                  |
     // ==========================================================================================================
     @DeleteMapping("/deleteUser")
-    public void deleteUserByID(@RequestParam Long userID) throws IllegalStateException{
+    public void deleteUserByID(@RequestParam String userID) throws IllegalStateException {
         userService.deleteUserByID(userID);
     }
 

@@ -42,8 +42,9 @@ public class RecipeService {
     // ==========================================================================================================
     // |                                                  READ                                                  |
     // ==========================================================================================================
-    public List<RecipeEntity> getAllRecipes() {
-        return recipeRepository.findAll();
+    public List<RecipeEntity> getAllRecipes(String stringSkipRowsOffset) {
+        int skipRowsOffset = Integer.parseInt(stringSkipRowsOffset);
+        return recipeRepository.getRecipeEntitiesWithOffsetAndLimit(skipRowsOffset);
     }
 
     public List<RecipeEntity> getRecipeWithRecipeName(String recipeName) {

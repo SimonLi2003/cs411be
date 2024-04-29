@@ -4,7 +4,6 @@ import com.apcbc.cs411backend.db.RecipeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -28,12 +27,12 @@ public class RecipeController {
     // ==========================================================================================================
     // |                                                  READ                                                  |
     // ==========================================================================================================
-    @GetMapping("/allRecipes")
-    public List<RecipeEntity> getAllRecipes() {
-        return recipeService.getAllRecipes();
+    @PostMapping("/allRecipes")
+    public List<RecipeEntity> getAllRecipes(@RequestParam String skipRowsOffset) {
+        return recipeService.getAllRecipes(skipRowsOffset);
     }
 
-    @GetMapping("/getRecipeWithRecipeName")
+    @PostMapping("/getRecipeWithRecipeName")
     public List<RecipeEntity> getRecipeWithIngredientName(@RequestParam String recipeName) {
         return recipeService.getRecipeWithRecipeName(recipeName);
     }

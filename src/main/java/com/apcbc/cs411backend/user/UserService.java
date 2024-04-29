@@ -61,7 +61,7 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public void getUserByEmailAndPassword(String userEmail, String password) throws IllegalArgumentException, IllegalStateException {
+    public Long getUserByEmailAndPassword(String userEmail, String password) throws IllegalArgumentException, IllegalStateException {
         Optional<UserEntity> optionalUser = userRepository.getUserEntityByUserEmail(userEmail);
         if (optionalUser.isEmpty()) {
             throw new IllegalStateException("user does not exist!");
@@ -73,19 +73,29 @@ public class UserService {
 
         UserEntity userEntity = optionalUser.get();
         if (!userEntity.password().equals(password)) {
-            throw new IllegalArgumentException("password cannot be null / empty!");
+            throw new IllegalArgumentException("password is incorrect!");
         }
+
+        return userEntity.userID();
     }
 
     // ==========================================================================================================
     // |                                                 UPDATE                                                 |
     // ==========================================================================================================
     @Transactional
+    public void updateAll(String stringUserID,
+                          String newUserName,
+                          String newUserEmail,
+                          String newUserPassword) throws IllegalArgumentException, IllegalStateException {
+        Long userID = Long.parseLong(stringUserID);
+        updateName(userID, newUserName);
+        updateEmail(userID, newUserEmail);
+        updatePassword(userID, newUserPassword);
+    }
+    @Transactional
     public void updateEmail(Long userID,
                             String newUserEmail) throws IllegalArgumentException, IllegalStateException {
-        if (newUserEmail == null || newUserEmail.isEmpty()) {
-            throw new IllegalArgumentException("new user email cannot be null / empty!");
-        }
+        if (newUserEmail == null || newUserEmail.isEmpty()) return;
 
         Optional<UserEntity> optionalUser = userRepository.getUserEntityByUserID(userID);
         if (optionalUser.isEmpty()) {throw new IllegalStateException("user does not exist!");}
@@ -105,9 +115,7 @@ public class UserService {
     @Transactional
     public void updateName(Long userID,
                             String newUserName) throws IllegalStateException {
-        if (newUserName == null || newUserName.isEmpty()) {
-            throw new IllegalArgumentException("user name cannot be null / empty!");
-        }
+        if (newUserName == null || newUserName.isEmpty()) return;
 
         Optional<UserEntity> optionalUser = userRepository.getUserEntityByUserID(userID);
         if (optionalUser.isEmpty()) {throw new IllegalStateException("user does not exist!");}
@@ -123,9 +131,7 @@ public class UserService {
     @Transactional
     public void updatePassword(Long userID,
                            String newPassword) throws IllegalStateException {
-        if (newPassword == null || newPassword.isEmpty()) {
-            throw new IllegalArgumentException("password cannot be null / empty!");
-        }
+        if (newPassword == null || newPassword.isEmpty()) return;
 
         Optional<UserEntity> optionalUser = userRepository.getUserEntityByUserID(userID);
         if (optionalUser.isEmpty()) {throw new IllegalStateException("user does not exist!");}
@@ -143,8 +149,8 @@ public class UserService {
     // |                                                DELETE                                                  |
     // ==========================================================================================================
     @Transactional
-    public void deleteUserByID(Long userID) throws IllegalStateException {
+    public void deleteUserByID(String stringUserID) throws IllegalStateException {
+        Long userID = Long.parseLong(stringUserID);
         userRepository.deleteUserEntityByUserID(userID);
     }
-
 }

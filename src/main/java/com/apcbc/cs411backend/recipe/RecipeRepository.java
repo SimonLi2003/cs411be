@@ -26,6 +26,9 @@ public interface RecipeRepository extends ListCrudRepository<RecipeEntity, Long>
     @Query("SELECT * FROM Recipes WHERE user_email = :userEmail")
     List<RecipeEntity> getRecipeWithUserEmail(String userEmail);
 
+    @Query("SELECT * FROM Recipes LIMIT :skipRowsOffset, 200")
+    List<RecipeEntity> getRecipeEntitiesWithOffsetAndLimit(int skipRowsOffset);
+
     @Modifying
     @Query("INSERT INTO Recipes(recipe_id, recipe_name, recipe_type, user_email) VALUES (:recipeID, :recipeName, :recipeType, :userEmail)")
     void insert(Long recipeID, String recipeName, String recipeType, String userEmail);

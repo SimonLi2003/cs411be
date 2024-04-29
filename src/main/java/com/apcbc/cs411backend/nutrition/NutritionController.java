@@ -1,7 +1,9 @@
 package com.apcbc.cs411backend.nutrition;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.apcbc.cs411backend.db.NutritionEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,6 +20,10 @@ public class NutritionController {
     // ==========================================================================================================
     // |                                                  READ                                                  |
     // ==========================================================================================================
+    @PostMapping("/getNutritionWithRecipeID")
+    public NutritionEntity getNutritionWithRecipeID(@RequestParam String recipeID) {
+        return nutritionService.getNutritionWithRecipeID(recipeID);
+    }
 
     // ==========================================================================================================
     // |                                                 UPDATE                                                 |
